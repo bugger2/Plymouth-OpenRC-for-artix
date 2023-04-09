@@ -1,7 +1,44 @@
-# Plymouth-OpenRC-for-artix
-This is to add OpenRC support to Plymouth in Artix linux. You will still need to install plymouth or plymouth-git from arch before installing these files.
+# Plymouth for openrc
 
-These files work for my system. Don't use it if you are new to Linux and I am not going to provide the steps to install them. But its simple if you search from the internet about how to setup Plymouth, /etc/local.d and /etc/init.d. In addition, the Before / After in the service files may need to further update to make it working in a better state.
+## This contains multiple openrc scripts to start plymouth and boot into the display manager of your choice
+
+### Dependencies
+
+- The display manager that the file is named after
+
+- Plymouth
+
+- OpenRC
+
+### Preparation
+
+Add the following:
+
+```
+# in /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="... quiet splash" # Replace ... with whatever is already there by default
+```
+
+```
+# in /etc/mkinitcpio.conf
+HOOKS=(... plymouth ...)  # Replace ... with whatever you already have
+```
+Issue the following in a terminal
+
+`doas grub-mkconfig -o /boot/grub/grub.cfg # use sudo if you don't have doas`
+
+`doas mkinitcpio -P # use sudo if you don't have doas`
+
+### Goals
+
+It is unclear what to do with each file currently. I forked this so I could add the ly script. I will add better documentation in the future
 
 ## Note for ly
-This is different. You do not need to add any of the special other files, just use this as your ly startup script.
+
+This guy is way easy. Just enter the following commands, and it should work fine.
+
+```
+doas cp ly /etc/init.d/ # use sudo if you don't have doas
+
+doas rc-update add ly default # use sudo if you don't have doas
+```
