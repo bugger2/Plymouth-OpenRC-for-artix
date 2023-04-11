@@ -6,7 +6,6 @@ supervisor="supervise-daemon"
 command="/usr/bin/gdm"
 
 depend() {
-	after elogind agetty.tty1 plymouth-deactivate plymouth-quit 
-	use plymouth-deactivate
-	provide xdm
+	after elogind agetty.tty1 plymouth-quit 
+	provide xdm display-manager
 }

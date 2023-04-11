@@ -7,7 +7,6 @@ command="/usr/bin/slim"
 command_args="-nodaemon"
 
 depend() {
-	after elogind getty@tty1 plymouth-deactivate plymouth-quit 
-	use plymouth-deactivate 
-	provide xdm
+	after elogind getty@tty1 plymouth-quit 
+	provide xdm display-manager
 }

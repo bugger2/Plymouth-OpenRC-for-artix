@@ -4,13 +4,13 @@
 
 ### Dependencies
 
-- The display manager that the file is named after
+- A display manager that is supported (listed in one of the files)
 
 - Plymouth
 
 - OpenRC
 
-### Preparation
+### Installation
 
 Add the following:
 
@@ -25,20 +25,20 @@ HOOKS=(... plymouth ...)  # Replace ... with whatever you already have
 ```
 Issue the following in a terminal
 
-`doas grub-mkconfig -o /boot/grub/grub.cfg # use sudo if you don't have doas`
-
-`doas mkinitcpio -P # use sudo if you don't have doas`
-
-### Goals
-
-It is unclear what to do with each file currently. I forked this so I could add the ly script. I will add better documentation in the future
-
-## Note for ly
-
-This guy is way easy. Just enter the following commands, and it should work fine.
-
 ```
-doas cp ly /etc/init.d/ # use sudo if you don't have doas
+# Use sudo if you do not have doas
 
-doas rc-update add ly default # use sudo if you don't have doas
+doas grub-mkconfig -o /boot/grub/grub.cfg # rebuild the grub config since we changed it
+
+doas mkinitcpio -P # rebuild the initramfs since we changed it
+
+doas cp ${display_manager_of_your_choice} /etc/init.d/
+
+doas cp plymouth-quit /etc/init.d/
+
+doas rc-update add ${display_manager_of_your_choice} default # make sure we start the display manager (with some extra touches for plymouth)
+
+doas rc-update add plymouth-quit default # boots into your display manager without just hanging on plymouth forever
+
+doas cp plymouth-poweroff.stop /etc/local.d/ # enables plymouth at shutdown screen
 ```
