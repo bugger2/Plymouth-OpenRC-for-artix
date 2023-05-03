@@ -1,12 +1,18 @@
-#!/bin/openrc-run
+#!/usr/bin/openrc-run
 
-name=$RC_SVCNAME
-description="Simple Desktop Display Manager"
-supervisor="supervise-daemon"
+supervisor=supervise-daemon
 command="/usr/bin/sddm"
 
-
 depend() {
-	after elogind agetty.tty1 plymouth-quit
-	provide xdm display-manager
+    need localmount
+
+    after bootmisc consolefont modules netmount
+    after ypbind autofs openvpn gpm lircmd
+    after quota keymaps
+    after agetty
+    before alsasound
+    want logind
+    use xfs
+
+    provide xdm display-manager
 }
